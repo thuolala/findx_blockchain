@@ -1,118 +1,74 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+"use client";
 
-const inter = Inter({ subsets: ['latin'] })
+import Image from 'next/image';
+import "@fortawesome/fontawesome-svg-core/styles.css"; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from 'next/link';
+import React from "react";
+import LoginModal from './login';
+import LogupModal from './logup';
+
+import {
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
+  const [showModal, setShowModal] = React.useState(false);
+  // const [showModalLogup, setShowModalLogup] = React.useState(false);
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="flex min-h-screen flex-col justify-between p-5 bg-img">
+
+      <header className="sticky top-0 z-50">
+        <nav className="navbar sticky">
+          <ul className="navbar-nav mr-auto mt-2 mt-lg-0 d-flex flex-col justify-between flow-root">
+            <Link className="navbar-brand d-none d-xl-block text-white text-2xl float-left" href={""}>FindX</Link>
+            <Link className="navbar-brand d-none d-xl-block mr-4 float-right" href={""}><FontAwesomeIcon icon={faHouse} style={{ fontSize: 20, color: "white" }}></FontAwesomeIcon></Link>
+          </ul>
+        </nav>
+      </header>
+
+      <h1 className='text-center d-flex flex-col relative justify-center text-xl text-lime-custom mx-auto mt-auto' style={{fontFamily: "Roboto Mono", fontWeight: 'lighter'}}>
+        Welcome
+      </h1>
+      <div className="flex justify-content-center mx-auto grid grid-cols-3 mt-5 mb-5">
+        <div className="p-2 sm:grid-cols-12 lg:grid-cols-4">
+          <Link  href= '#'> 
+          <Image className="login-box backdrop-blur-sm" src="/nsx_login.png" 
+                                      width={180}
+                                      height={180}
+                                      alt="Picture login"
+                                      onClick={() => setShowModal(true)}/>
+          </Link> 
+        </div>
+        <div className="p-2 sm:grid-cols-12 lg:grid-cols-4">
+        <Link  href= '#'> 
+          <Image className="login-box backdrop-blur-sm" src="/ncc_login.png" 
+                                      width={180}
+                                      height={180}
+                                      alt="Picture login"
+                                      onClick={() => setShowModal(true)}/>
+        </Link> 
+        </div>
+        <div className="p-2 sm:grid-cols-12 lg:grid-cols-4">
+        <Link  href= '/customer'> 
+          <Image className="login-box backdrop-blur-sm" src="/customer_login.png" 
+                                      width={180}
+                                      height={180}
+                                      alt="Picture login"/>
+        </Link> 
         </div>
       </div>
+      <h1 className='text-center d-flex flex-col relative justify-center text-3xl text-white mx-auto mb-auto' style={{fontFamily: "Roboto Mono", fontWeight: 'lighter'}}>
+        Supply Chain Service
+      </h1>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <LoginModal showModal={showModal} setShowModal={setShowModal}> 
+      </LoginModal>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      {/* <LogupModal showModal={showModalLogup} setShowModal={setShowModalLogup}> 
+      </LogupModal> */}
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
   )
 }
