@@ -11,7 +11,7 @@ contract Traceability {
         string category;
         string from;
         string to;
-        uint256 dateAdded;
+        string dateAdded;
         string status;
     }
 
@@ -24,7 +24,7 @@ contract Traceability {
     fallback() external payable {}
 
     // Event to emit when a new shipment is added
-    event ShipmentAdded(uint256 shipmentId, string productId, string productName, string category, string from, string to, uint256 dateAdded, string status);
+    event ShipmentAdded(uint256 shipmentId, string productId, string productName, string category, string from, string to, string dateAdded, string status);
 
     // Function to add a new shipment
     function addShipment(
@@ -34,7 +34,7 @@ contract Traceability {
         string memory _category,
         string memory _from,
         string memory _to,
-        uint256 _dateAdded,
+        string memory _dateAdded,
         string memory _status
     ) external {
         // Ensure shipmentId is unique
@@ -62,12 +62,13 @@ contract Traceability {
 
 
     function getShipment(uint256 _shipmentId) public view returns (
-        string memory,
-        string memory,
-        string memory,
-        string memory,
-        string memory,
         uint256,
+        string memory,
+        string memory,
+        string memory,
+        string memory,
+        string memory,
+        string memory,
         string memory
     ) {
         uint256 hashedId = uint256(keccak256(abi.encodePacked(_shipmentId)));
@@ -75,6 +76,7 @@ contract Traceability {
         Shipment storage shipment = shipmentArray[0];
 
         return (
+            shipment.shipmentId,
             shipment.productId,
             shipment.productName,
             shipment.category,

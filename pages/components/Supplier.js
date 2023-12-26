@@ -26,12 +26,18 @@ const Supplier = () => {
   const [shipmentId, setShipmentId] = useState('');
   const [suppliers, setSuppliers] = useState([]);
   const [filteredSuppliers, setFilteredSuppliers] = useState([]);
+  const [shipmentDetails, setShipmentDetails] = useState('');
 
   const router = useRouter();
   const {fullname} = router.query; 
 
   const handleGetShipment = ({shipmentId}) => {
-    getShipment(shipmentId);
+    const getShip = getShipment(shipmentId);
+    if (getShip){
+      setShipmentDetails(getShip)
+      setName(getShip.productName)
+    }
+    
   };
 
   // Fetch categories and products
@@ -358,7 +364,7 @@ const Supplier = () => {
             <textarea
               id="status"
               name="status"
-              value={note}
+              value={shipmentDetails}
               onChange={(e) => setNote(e.target.value)}
               rows="3"
               className="mt-1 p-2 w-full border rounded-md font-robo"

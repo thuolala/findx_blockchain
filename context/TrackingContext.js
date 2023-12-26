@@ -104,17 +104,18 @@ export const TrackingProvider = ({ children }) => {
             const shipment = await contract.getShipment(shipmentId)
 
             const SingleShiplent = {
-                productId : shipment[0], 
-                productName : shipment[1], 
-                category : shipment[2], 
-                from : shipment[3], 
-                to : shipment[4], 
-                dateAdded : shipment[5], 
-                status : shipment[6]
+                shipmentId : shipment[0],
+                productId : shipment[1], 
+                productName : shipment[2], 
+                category : shipment[3], 
+                from : shipment[4], 
+                to : shipment[5], 
+                dateAdded : shipment[6], 
+                status : shipment[7]
             }
 
             console.log(SingleShiplent)
-            alert(SingleShiplent)
+            alert(SingleShiplent.productName)
             return SingleShiplent
         } catch (error) {
             console.log("Error no shipment")
