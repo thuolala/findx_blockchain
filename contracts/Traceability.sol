@@ -16,12 +16,10 @@ contract Traceability {
     }
 
     // Mapping to store arrays of shipments
-    address public owner;
     mapping(uint256 => Shipment[]) public shipments;
     uint256 public shipmentsCount;
 
     constructor() {
-        owner = msg.sender;
     }
     fallback() external payable {}
 
@@ -86,5 +84,4 @@ contract Traceability {
             shipment.status
         );
     }
-
 }

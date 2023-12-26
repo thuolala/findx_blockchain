@@ -7,7 +7,7 @@ import html2canvas from 'html2canvas';
 import { TrackingContext} from '@/context/TrackingContext';
 
 const Manufacture = () => {
-  const { addShipment, connectWallet, currentUser } = useContext(TrackingContext);
+  const { addShipment, connectWallet, currentUser, getShipment } = useContext(TrackingContext);
 
   const [id, setId] = useState('');
   const [name, setName] = useState('');
@@ -23,6 +23,7 @@ const Manufacture = () => {
   const [productId, setProductId] = useState('');
   const [shipmentId, setShipmentId] = useState('');
   const [suppliers, setSuppliers] = useState([]);
+  const [showPushUpBox, setShowPushUpBox] = useState(false);
 
   const handleAddShipment = () => {
     const shipmentDetails = {
@@ -35,7 +36,8 @@ const Manufacture = () => {
       dateAdded: dateAdded,
       status: note
   };
-  addShipment(shipmentDetails)
+  if (addShipment(shipmentDetails))
+    setShowPushUpBox(true);
   };
 
   const router = useRouter();
@@ -162,29 +164,19 @@ const Manufacture = () => {
               Download
             </button>
           </div>
+
+            {/* Push-up box */}
+            {showPushUpBox && (
+            <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-auto push-up-box fly-up-animation" style={{ width: 'fit-content' }}>
+              <p className="text-center text-gray-500 font-robo">Push-up Box Content </p>
+              {/* Add more content as needed */}
+            </div>
+          )}
         </div>
 
         {/* Right side for adding a product */}
         
         <div className="w-3/4 p-4">
-
-        {/* <div className='flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0'>
-                    {currentUser ? (
-                        <p className='flex items-center justify-center gap-x-1 py-2 px-4
-                        text-white font-medium bg-gray-800 hover:bg-gray-700 active:bg-gray-900
-                        rounded-full md:inline-flex'>
-                            {currentUser.slice(0,25)}..
-                        </p>
-                    ) : (
-                        <button
-                            onClick={() => connectWallet()}
-                            className='flex items-center justify-center gap-x-1 py-2 px-4
-                            text-white font-medium bg-gray-800 hover:bg-gray-700 active:bg-gray-900
-                            rounded-full md:inline-flex'>
-                                Connect Wallet
-                            </button>
-                    )}
-                </div> */}
 
           <h2 className="text-2xl font-bold mb-4">Shipment</h2>
           {/* Shipment ID field */}
@@ -334,11 +326,15 @@ const Manufacture = () => {
               className="mt-1 p-2 w-full border rounded-md font-robo"
             ></textarea>
           </div>
+          
+
           <div className="flex justify-between">
             <button
               type="button"
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              onClick={() => handleAddShipment()}
+              onClick={() => 
+                handleAddShipment()}
+              
             >
               Add
             </button>

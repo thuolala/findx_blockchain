@@ -49,3 +49,18 @@ body {
   box-shadow: 0 0 20px rgb(160, 211, 130);
 }
 
+.fly-up-animation {
+  animation: flyUp 0.5s ease-in-out;
+}
+
+@keyframes flyUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+

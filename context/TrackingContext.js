@@ -31,6 +31,16 @@ export const TrackingProvider = ({ children }) => {
                     dateAdded, 
                     status
                 });
+                alert("Shipment created:", {
+                    shipmentId, 
+                    productId, 
+                    productName, 
+                    category, 
+                    from, 
+                    to, 
+                    dateAdded, 
+                    status
+                });
                 
             });
         };
@@ -53,7 +63,6 @@ export const TrackingProvider = ({ children }) => {
 
     const addShipment = async (items) => {
         const { shipmentId, productId, productName, category, from, to, dateAdded, status } = items 
-
         try {
             if(!window.ethereum) return "Install MetaMask"
             const accounts = await window.ethereum.request({
@@ -76,8 +85,9 @@ export const TrackingProvider = ({ children }) => {
                 dateAdded, 
                 status
             )
-            await createItem.wait()
-            console.log("Added succesfully!")
+            if (await createItem.wait()){
+                alert("Added succesfully!")
+            }
         } catch (error) {
             console.log("Something went wrong", error)
         }
@@ -95,15 +105,16 @@ export const TrackingProvider = ({ children }) => {
 
             const SingleShiplent = {
                 productId : shipment[0], 
-                productName : shipment[0], 
-                category : shipment[0], 
-                from : shipment[0], 
-                to : shipment[0], 
-                dateAdded : shipment[0], 
-                status : shipment[0]
+                productName : shipment[1], 
+                category : shipment[2], 
+                from : shipment[3], 
+                to : shipment[4], 
+                dateAdded : shipment[5], 
+                status : shipment[6]
             }
 
             console.log(SingleShiplent)
+            alert(SingleShiplent)
             return SingleShiplent
         } catch (error) {
             console.log("Error no shipment")
