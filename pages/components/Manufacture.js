@@ -27,7 +27,6 @@ const Manufacture = () => {
 
   const handleAddShipment = () => {
     const shipmentDetails = {
-      shipmentId: shipmentId,
       productId: productId,
       productName: name,
       category: categoryId,
@@ -35,9 +34,9 @@ const Manufacture = () => {
       to: to,
       dateAdded: dateAdded,
       status: note
-  };
-  if (addShipment(shipmentDetails))
-    setShowPushUpBox(true);
+   };
+    if (addShipment(shipmentDetails))
+      setShowPushUpBox(true);
   };
 
   const router = useRouter();
@@ -107,7 +106,7 @@ const Manufacture = () => {
   // Function to generate QR code based on the product ID
   const generateQRCode = () => {
     if (id) {
-      const qrData = `${shipmentId}`;
+      const qrData = `${productId}`;
       setGeneratedQR(qrData);
     }
   };
@@ -168,8 +167,14 @@ const Manufacture = () => {
             {/* Push-up box */}
             {showPushUpBox && (
             <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-auto push-up-box fly-up-animation" style={{ width: 'fit-content' }}>
-              <p className="text-center text-gray-500 font-robo">Push-up Box Content </p>
-              {/* Add more content as needed */}
+              <button type="button" className="bg-white rounded-md p-2 items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 mr-0" onClick={() => setShowPushUpBox(false)}>
+                <span class="sr-only">Close menu</span>
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <p className="text-center text-gray-500 font-robo">New block added </p>
+              <p className="text-center text-gray-500 font-robo">New block added </p>
             </div>
           )}
         </div>
@@ -228,7 +233,7 @@ const Manufacture = () => {
           <div className="flex mb-4">
             <div className="w-1/2 mr-2">
             <label htmlFor="id" className="block text-sm font-medium text-gray-600">
-              ID
+              Product ID
             </label>
             <input
               type="text"
@@ -313,6 +318,7 @@ const Manufacture = () => {
             </select>
           </div>
           </div>
+          
           <div className="mb-4">
             <label htmlFor="status" className="block text-sm font-medium text-gray-600">
               Status
@@ -336,7 +342,7 @@ const Manufacture = () => {
                 handleAddShipment()}
               
             >
-              Add
+              Ship
             </button>
             <button
               type="button"

@@ -12,12 +12,6 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": true,
-          "internalType": "uint256",
-          "name": "shipmentId",
-          "type": "uint256"
-        },
-        {
           "indexed": false,
           "internalType": "string",
           "name": "productId",
@@ -48,7 +42,7 @@
           "type": "string"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "string",
           "name": "dateAdded",
           "type": "string"
@@ -65,12 +59,6 @@
     },
     {
       "inputs": [
-        {
-          "indexed": true,
-          "internalType": "uint256",
-          "name": "_shipmentId",
-          "type": "uint256"
-        },
         {
           "indexed": false,
           "internalType": "string",
@@ -102,7 +90,7 @@
           "type": "string"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "string",
           "name": "_dateAdded",
           "type": "string"
@@ -120,116 +108,48 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "getAllTransactions",
-      "outputs": [
-        {
-          "components": [
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "shipmentId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "productId",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "productName",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "category",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "from",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "to",
-              "type": "string"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "dateAdded",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "status",
-              "type": "string"
-            }
-          ],
-          "internalType": "struct Traceability.Shipment[]",
-          "name": "",
-          "type": "tuple[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "_shipmentId",
-          "type": "uint256"
+          "internalType": "string",
+          "name": "_productId",
+          "type": "string"
         }
       ],
       "name": "getShipment",
       "outputs": [
         {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        },
-        {
           "internalType": "string",
-          "name": "",
+          "name": "productId",
           "type": "string"
         },
         {
           "internalType": "string",
-          "name": "",
+          "name": "productName",
           "type": "string"
         },
         {
           "internalType": "string",
-          "name": "",
+          "name": "category",
           "type": "string"
         },
         {
           "internalType": "string",
-          "name": "",
+          "name": "from",
           "type": "string"
         },
         {
           "internalType": "string",
-          "name": "",
+          "name": "to",
           "type": "string"
         },
         {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
+          "internalType": "string",
+          "name": "dateAdded",
+          "type": "string"
         },
         {
           "internalType": "string",
-          "name": "",
+          "name": "status",
           "type": "string"
         }
       ],

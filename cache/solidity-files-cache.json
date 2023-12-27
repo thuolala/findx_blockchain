@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\User\\Desktop\\Studying\\4th\\HK1\\Blockchain\\Demo\\findx\\contracts\\Traceability.sol": {
-      "lastModificationDate": 1703563559923,
-      "contentHash": "d261d724a1b9c98882b7bf7b220c1d83",
+      "lastModificationDate": 1703666157273,
+      "contentHash": "a23c86c90483374efd99df8165d3757a",
       "sourceName": "contracts/Traceability.sol",
       "solcConfig": {
         "version": "0.8.19",

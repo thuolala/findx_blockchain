@@ -5,6 +5,8 @@ import {
     faSignOut,
     faHouse, 
     faUserEdit, 
+    faList,
+    faDashboard,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -14,10 +16,16 @@ const Sidebar = ({name}) => {
       <h2 className="text-xl font-bold mb-4">{name}</h2>
 
       <ul className="space-y-5">
-      <Link href="/">
+        <Link href="#" >
           <li className="flex items-center" >
-          <FontAwesomeIcon icon={faHouse} className='mr-2 my-2'></FontAwesomeIcon>
-          <p>Home</p>
+          <FontAwesomeIcon icon={faDashboard} className='mr-2 my-2'></FontAwesomeIcon>
+          <p>Dashboard</p>
+          </li>
+        </Link>
+        <Link href="/">
+          <li className="flex items-center" >
+          <FontAwesomeIcon icon={faList} className='mr-2 my-2'></FontAwesomeIcon>
+          <p>Products</p>
           </li>
         </Link>
         <Link href="/">

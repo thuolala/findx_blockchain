@@ -1,15 +1,14 @@
 
-import { useState, useEffect, useContext } from 'react';
+import { useRouter } from 'next/router';
+import { useState, useEffect, useContext} from 'react';
+import QRCode from 'react-qr-code';
 import Sidebar from './Sidebar';
 import html2canvas from 'html2canvas';
-import QrCodeReader from 'qrcode-reader';
-import jsQR from 'jsqr';
-import { useRouter } from 'next/router';
 import { TrackingContext} from '@/context/TrackingContext';
 
-const Supplier = () => {
-  const { getShipment, addShipment} = useContext(TrackingContext);
-  
+const addProduct = () => {
+  const { addShipment, connectWallet, currentUser, getShipment } = useContext(TrackingContext);
+
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [categoryId, setCategoryId] = useState('');
@@ -22,18 +21,13 @@ const Supplier = () => {
   const [generatedQR, setGeneratedQR] = useState(null);
   const [products, setProducts] = useState([]);
   const [productId, setProductId] = useState('');
-  const [scannedQRData, setScannedQRData] = useState('');
   const [shipmentId, setShipmentId] = useState('');
   const [suppliers, setSuppliers] = useState([]);
-  const [filteredSuppliers, setFilteredSuppliers] = useState([]);
-  const [shipmentDetails, setShipmentDetails] = useState('');
-  const [productName, setProductName] = useState('');
-
-  const router = useRouter();
-  const {fullname} = router.query; 
+  const [showPushUpBox, setShowPushUpBox] = useState(false);
 
   const handleAddShipment = () => {
     const shipmentDetails = {
+      shipmentId: shipmentId,
       productId: productId,
       productName: name,
       category: categoryId,
@@ -41,21 +35,19 @@ const Supplier = () => {
       to: to,
       dateAdded: dateAdded,
       status: note
-   };
-    addShipment(shipmentDetails);
+  };
+  if (addShipment(shipmentDetails))
+    setShowPushUpBox(true);
   };
 
-  const loadData = (productId) => {
-    getShipment(productId)
-      .then((getShip) => {
-        if (getShip) {
-          setProductName(getShip.productName);
-        }
-      })
-      .catch((error) => {
-        console.error('Error getting shipment:', error);
-      });
-  };
+  const router = useRouter();
+  const {fullname} = router.query; 
+
+  // Generate a random shipment ID
+  useEffect(() => {
+    const randomShipmentId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+    setShipmentId(randomShipmentId);
+  }, []);
 
   // Fetch categories and products
   useEffect(() => {
@@ -92,97 +84,38 @@ const Supplier = () => {
     fetchSuppliers();
     fetchCategories();
     fetchProducts();
-  }, []);
 
-    useEffect(() => {
-      setFilteredSuppliers(suppliers.filter((supplier) => supplier.name !== fullname));
-    }, [fullname, suppliers]);
+  }, []);
 
   // Update other fields when productId changes
   useEffect(() => {
     // Find the selected product
     const selectedProduct = products.find((product) => product.id === productId);
+    const randomShipmentId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
 
     // Update other fields based on the selected product
     if (selectedProduct) {
       setId(selectedProduct.id);
       setName(selectedProduct.name);
       setCategoryId(selectedProduct.category_id);
+      setShipmentId(randomShipmentId);
     }
   }, [productId, products]);
 
-  // Function to read data from a QR code image
-  const readQRCodeFromImage = async (imageFile) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
 
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
 
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-        if (code) {
-          const pid = code.data
-          resolve(pid);
-          setProductId(pid)
-
-          loadData(pid);
-
-        } else {
-          reject(new Error('No QR code found in the image.'));
-        }
-      };
-
-      img.src = URL.createObjectURL(imageFile);
-    });
-  };
-    
-  // Function to handle QR code scanning from file upload
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      try {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-          const img = new Image();
-          img.src = e.target.result;
-
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0, img.width, img.height);
-
-            const qrCodeReader = new QrCodeReader();
-
-            qrCodeReader.decode(canvas.toDataURL());
-
-            // Set the scanned QR code data to display
-            setScannedQRData(canvas.toDataURL());
-            readQRCodeFromImage(file);
-          };
-        };
-
-        reader.readAsDataURL(file);
-      } catch (error) {
-        console.error('Error reading file contents:', error);
-      }
+  // Function to generate QR code based on the product ID
+  const generateQRCode = () => {
+    if (id) {
+      const qrData = `${shipmentId}`;
+      setGeneratedQR(qrData);
     }
   };
 
-  // Function to download the generated QR code as a PNG image
+  // Function to download the generated QR code
   const downloadQRCode = () => {
     const qrCodeContainer = document.getElementById('qrCodeContainer');
-
+  
     if (qrCodeContainer) {
       html2canvas(qrCodeContainer).then((canvas) => {
         const downloadLink = document.createElement('a');
@@ -193,7 +126,7 @@ const Supplier = () => {
         document.body.removeChild(downloadLink);
       });
     }
-  };
+  };  
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -205,39 +138,46 @@ const Supplier = () => {
         {/* Left side for reading and displaying QR code */}
         <div className="w-1/4 p-4 border-r border-gray-300">
           {/* Box to display QR code */}
-          <div id="qrCodeContainer" className="bg-white p-2 shadow-md rounded-md mb-4 mx-auto" style={{ width: 'fit-content' }}>
-            {scannedQRData ? (
-              <img src={scannedQRData} alt="Scanned QR Code" className="max-w-full h-auto mx-auto" size={150}/>
+          <div className="bg-white p-2 shadow-md rounded-md mb-4 mx-auto" style={{ width: 'fit-content' }} id="qrCodeContainer">
+            {generatedQR ? (
+              <QRCode value={generatedQR} size={150} />
             ) : (
-              <p className="text-center text-gray-500 font-robo">No QR Code scanned</p>
+              <p className="text-center text-gray-500 font-robo">No QR Code generated</p>
             )}
           </div>
 
-          {/* Buttons for QR code actions */}
+          {/* Buttons to generate and download QR code */}
           <div className="flex justify-between">
-            <label htmlFor="fileUpload" className="bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer">
-              Upload
-            </label>
-            <input
-              type="file"
-              id="fileUpload"
-              accept=".png"
-              className="hidden"
-              onChange={handleFileUpload}
-            />
+            <button
+              type="button"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              onClick={generateQRCode}
+            >
+              Generate
+            </button>
             <button
               type="button"
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
               onClick={downloadQRCode}
-              
+              disabled={!generatedQR}
             >
               Download
             </button>
           </div>
+
+            {/* Push-up box */}
+            {showPushUpBox && (
+            <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-auto push-up-box fly-up-animation" style={{ width: 'fit-content' }}>
+              <p className="text-center text-gray-500 font-robo">Push-up Box Content </p>
+              {/* Add more content as needed */}
+            </div>
+          )}
         </div>
 
         {/* Right side for adding a product */}
+        
         <div className="w-3/4 p-4">
+
           <h2 className="text-2xl font-bold mb-4">Shipment</h2>
           {/* Shipment ID field */}
           <div className="mb-4">
@@ -254,33 +194,48 @@ const Supplier = () => {
               disabled
             />
           </div>
-
-          {/* Product Name field */}
           <div className="mb-4">
-            <label htmlFor="productName" className="block text-sm font-medium text-gray-600">
-            Product to ship
+            <label htmlFor="product" className="block text-sm font-medium text-gray-600">
+              Choose a product to ship
             </label>
-            <input
-              type="text"
-              id="productName"
-              name="productName"
-              value={productName}
-              readOnly
+            <select
+              id="product"
+              name="product"
+              value={productId}
+              onChange={(e) => {
+                const selectedProductId = e.target.value;
+                setProductId(selectedProductId);
+
+                // Fetch category ID based on the selected product ID
+                const selectedProduct = products.find((product) => product.id === selectedProductId);
+                if (selectedProduct) {
+                  setCategoryId(selectedProduct.category_id);
+                }
+              }}
               className="mt-1 p-2 w-full border rounded-md font-robo"
-              disabled
-            />
+            >
+              <option value="" disabled className='font-robo'>
+                Select Product
+              </option>
+              {products.map((product) => (
+                <option key={product.id} value={product.id} className='font-robo'>
+                  {product.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="flex mb-4">
             <div className="w-1/2 mr-2">
-            <label htmlFor="productId" className="block text-sm font-medium text-gray-600">
-              Product ID
+            <label htmlFor="id" className="block text-sm font-medium text-gray-600">
+              ID
             </label>
             <input
               type="text"
-              id="productId"
-              name="productId"
-              value={productId}
+              id="id"
+              name="id"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
               className="mt-1 p-2 w-full border rounded-md font-robo"
               disabled
               />
@@ -301,7 +256,7 @@ const Supplier = () => {
                 Select Category
               </option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id} className='font-robo'>
+                <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
               ))}
@@ -328,7 +283,7 @@ const Supplier = () => {
                 From
               </label>
               <input
-                type="text"
+                type="from"
                 id="from"
                 name="from"
                 value={fullname}
@@ -350,14 +305,13 @@ const Supplier = () => {
               <option value="" disabled className='font-robo'>
                 Select Supplier
               </option>
-              {filteredSuppliers.map((supplier) => (
+              {suppliers.map((supplier) => (
                 <option key={supplier.id} value={supplier.name} className='font-robo'>
                   {supplier.name}
                 </option>
               ))}
             </select>
           </div>
-
           </div>
           <div className="mb-4">
             <label htmlFor="status" className="block text-sm font-medium text-gray-600">
@@ -372,13 +326,17 @@ const Supplier = () => {
               className="mt-1 p-2 w-full border rounded-md font-robo"
             ></textarea>
           </div>
+          
+
           <div className="flex justify-between">
             <button
               type="button"
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              onClick={() => handleAddShipment()}
+              onClick={() => 
+                handleAddShipment()}
+              
             >
-              Ship
+              Add
             </button>
             <button
               type="button"
@@ -393,5 +351,5 @@ const Supplier = () => {
   );
 };
 
-export default Supplier;
+export default addProduct;
 
