@@ -106,26 +106,37 @@ export const TrackingProvider = ({ children }) => {
         }
     }
 
-    const getAllShipment = async () => {
+    const getAllShipment = async (product) => {
         try {
-       
-            const provider = new ethers.providers.JsonRpcProvider()
-            const contract = fetchContract(provider)
-            const shipments = await contract.getAllTransactions()
-            const allShipments = shipments.map(shipment => ({
-                destination: shipment.destination,
-                source: shipment.source,
-                timestamp: shipment.timestamp.toNumber(),
-                status: shipment.status,
-                productId: shipment.productId,
-                productName: shipment.productName
-            }))
-            return allShipments
-
+            const provider = new ethers.providers.JsonRpcProvider();
+            const contract = fetchContract(provider);
+    
+            const {
+                pidList,
+                pnameList,
+                pcateList,
+                pfromList,
+                ptoList,
+                pdateList,
+                pstatusList
+            } = await contract.getAllShipmentWithId(product);
+    
+            const allShipments = pidList.map((pid, index) => ({
+                productId: pid,
+                productName: pnameList[index],
+                category: pcateList[index],
+                from: pfromList[index],
+                to: ptoList[index],
+                date: pdateList[index],
+                status: pstatusList[index]
+            }));
+            
+            return allShipments;
         } catch (err) {
-            console.log("Error getting shipment")
+            console.log("Error getting shipment:", err);
+            throw err;
         }
-    }
+    };   
 
     //CHECK WALLET
     const checkIfWalletConnected = async () => {

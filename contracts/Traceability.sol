@@ -81,12 +81,38 @@ contract Traceability {
         );
     }
 
-    function getAllShipmentId(string memory _productId) public view returns (
-        Shipment[] storage
+    function getAllShipmentWithId(string memory _productId) public view returns (
+        string[] memory,
+        string[] memory,
+        string[] memory,
+        string[] memory,
+        string[] memory,
+        string[] memory,
+        string[] memory
     ) {
         uint256 hashedId = uint256(keccak256(abi.encodePacked(_productId)));
         Shipment[] storage shipmentArray = shipments[hashedId];
 
-        return shipmentArray;
+        // Get each as array 
+        string[] memory pidList = new string[](shipmentArray.length); 
+        string[] memory pnameList = new string[](shipmentArray.length); 
+        string[] memory pcateList = new string[](shipmentArray.length); 
+        string[] memory pfromList = new string[](shipmentArray.length); 
+        string[] memory ptoList = new string[](shipmentArray.length); 
+        string[] memory pdateList = new string[](shipmentArray.length); 
+        string[] memory pstatusList = new string[](shipmentArray.length); 
+
+        // Parse value to the array
+        for (uint256 i = 0; i < shipmentArray.length; i++) {
+            pidList[i] = shipmentArray[i].productId;
+            pnameList[i] = shipmentArray[i].productName;
+            pcateList[i] = shipmentArray[i].category;
+            pfromList[i] = shipmentArray[i].from;
+            ptoList[i] = shipmentArray[i].to;
+            pdateList[i] = shipmentArray[i].dateAdded;
+            pstatusList[i] = shipmentArray[i].status;
+        }
+
+        return (pidList, pnameList, pcateList, pfromList, ptoList, pdateList, pstatusList);
     }
 }

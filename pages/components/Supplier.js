@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { TrackingContext} from '@/context/TrackingContext';
 
 const Supplier = () => {
-  const { getShipment, addShipment} = useContext(TrackingContext);
+  const { getShipment, addShipment, getAllShipment} = useContext(TrackingContext);
   
   const [id, setId] = useState('');
   const [name, setName] = useState('');
@@ -43,6 +43,9 @@ const Supplier = () => {
       status: note
    };
     addShipment(shipmentDetails);
+
+    const aaa = getAllShipment(shipmentDetails.productId)
+    alert(aaa.length)
   };
 
   const loadData = (productId) => {
