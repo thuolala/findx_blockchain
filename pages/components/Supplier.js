@@ -39,7 +39,7 @@ const Supplier = () => {
       category: categoryId,
       from: fullname,
       to: to,
-      dateAdded: dateAdded,
+      dateAdded: String(dateAdded),
       status: note
    };
     addShipment(shipmentDetails);

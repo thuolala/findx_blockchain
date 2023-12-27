@@ -32,7 +32,7 @@ const Manufacture = () => {
       category: categoryId,
       from: fullname,
       to: to,
-      dateAdded: dateAdded,
+      dateAdded: String(dateAdded),
       status: note
    };
     if (addShipment(shipmentDetails))
@@ -173,7 +173,6 @@ const Manufacture = () => {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <p className="text-center text-gray-500 font-robo">New block added </p>
               <p className="text-center text-gray-500 font-robo">New block added </p>
             </div>
           )}
