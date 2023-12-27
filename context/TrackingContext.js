@@ -106,7 +106,7 @@ export const TrackingProvider = ({ children }) => {
         }
     }
 
-    const getAllShipment = async (product) => {
+    const getAllShipment = async (productId) => {
         try {
             const provider = new ethers.providers.JsonRpcProvider();
             const contract = fetchContract(provider);
@@ -119,7 +119,7 @@ export const TrackingProvider = ({ children }) => {
                 ptoList,
                 pdateList,
                 pstatusList
-            } = await contract.getAllShipmentWithId(product);
+            } = await contract.getAllShipmentWithId(productId);
     
             const allShipments = pidList.map((pid, index) => ({
                 productId: pid,

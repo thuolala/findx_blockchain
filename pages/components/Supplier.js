@@ -44,8 +44,10 @@ const Supplier = () => {
    };
     addShipment(shipmentDetails);
 
-    const aaa = getAllShipment(shipmentDetails.productId)
-    alert(aaa.length)
+    getAllShipment(productId)
+      .then((aaa) => {
+        alert(aaa.length)
+      })
   };
 
   const loadData = (productId) => {
