@@ -44,10 +44,10 @@ const Supplier = () => {
    };
     addShipment(shipmentDetails);
 
-    getAllShipment(productId)
-      .then((aaa) => {
-        alert(aaa.length)
-      })
+    // getAllShipment(productId)
+    //   .then((aaa) => {
+    //     alert(aaa.length)
+    //   })
   };
 
   const loadData = (productId) => {

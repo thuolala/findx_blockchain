@@ -66,9 +66,6 @@ export default function Home() {
       <LoginModal showModal={showModal} setShowModal={setShowModal}> 
       </LoginModal>
 
-      {/* <LogupModal showModal={showModalLogup} setShowModal={setShowModalLogup}> 
-      </LogupModal> */}
-
     </main>
   )
 }

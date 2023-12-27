@@ -122,7 +122,7 @@ export const TrackingProvider = ({ children }) => {
             } = await contract.getAllShipmentWithId(productId);
     
             const allShipments = pidList.map((pid, index) => ({
-                productId: pid,
+                productId: pidList[index],
                 productName: pnameList[index],
                 category: pcateList[index],
                 from: pfromList[index],
