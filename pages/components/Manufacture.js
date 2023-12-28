@@ -5,6 +5,7 @@ import QRCode from 'react-qr-code';
 import Sidebar from './Sidebar';
 import html2canvas from 'html2canvas';
 import { TrackingContext} from '@/context/TrackingContext';
+import AddProductModal from './AddProductModal';
 
 const Manufacture = () => {
   const { addShipment, connectWallet, currentUser, getShipment } = useContext(TrackingContext);
@@ -127,13 +128,19 @@ const Manufacture = () => {
     }
   };  
 
+    //Show modal
+    const [ addProductModal, setAddProductModal ] = useState(false)
+    const showAddProductModal = () => {
+      setAddProductModal(true)
+    }
+
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-img">
       {/* Sidebar */}
       <Sidebar name={fullname}/>
 
       {/* Main content */}
-      <main className="flex-1 flex p-8">
+      <main className="flex-1 flex p-8 bg-black backdrop-blur-sm bg-opacity-50">
         {/* Left side for reading and displaying QR code */}
         <div className="w-1/4 p-4 border-r border-gray-300">
           {/* Box to display QR code */}
@@ -149,14 +156,14 @@ const Manufacture = () => {
           <div className="flex justify-between">
             <button
               type="button"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              className="bg-black backdrop-blur-sm bg-opacity-70 text-white px-4 py-2 rounded-lg hover:bg-blue-600 text-sm"
               onClick={generateQRCode}
             >
               Generate
             </button>
             <button
               type="button"
-              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+              className="text-white bg-lime-custom hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               onClick={downloadQRCode}
               disabled={!generatedQR}
             >
@@ -166,26 +173,37 @@ const Manufacture = () => {
 
             {/* Push-up box */}
             {showPushUpBox && (
-            <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-auto push-up-box fly-up-animation" style={{ width: 'fit-content' }}>
-              <button type="button" className="bg-white rounded-md p-2 items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 mr-0" onClick={() => setShowPushUpBox(false)}>
-                <span class="sr-only">Close menu</span>
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <p className="text-center text-gray-500 font-robo">New block added </p>
+            <div className="bg-white backdrop-blur-sm rounded-lg mt-3 p-4 push-up-box fly-up-animation mx-auto " style={{ width: 'fit-content' }}>
+              <button className='flex text-gray-400 rounded-md hover:bg-gray-100 ml-auto font-robo text-sm'
+              onClick={() => setShowPushUpBox(false)}
+            >
+              X
+            </button>
+              <p className="text-center text-gray-500 font-robo mx-auto">New block added! </p>
             </div>
           )}
+
+
         </div>
 
         {/* Right side for adding a product */}
         
         <div className="w-3/4 p-4">
+            <div className='flex justify-between'> 
+            <h2 className="text-2xl font-bold mb-4 text-lime-custom">Shipment</h2>
+            <button
+              type="button"
+              className="bg-black backdrop-blur-sm bg-opacity-70 text-white px-4 py-2 rounded-lg hover:bg-blue-600 text-sm"
+              onClick={showAddProductModal}
+            >
+              Add Product
+            </button>
+              </div>
 
-          <h2 className="text-2xl font-bold mb-4">Shipment</h2>
+          
           {/* Shipment ID field */}
-          <div className="mb-4">
-            <label htmlFor="shipmentId" className="block text-sm font-medium text-gray-600">
+          {/* <div className="mb-4">
+            <label htmlFor="shipmentId" className="block text-sm font-medium text-white">
               Shipment ID
             </label>
             <input
@@ -197,9 +215,9 @@ const Manufacture = () => {
               className="mt-1 p-2 w-full border rounded-md font-robo"
               disabled
             />
-          </div>
+          </div> */}
           <div className="mb-4">
-            <label htmlFor="product" className="block text-sm font-medium text-gray-600">
+            <label htmlFor="product" className="block text-sm font-medium text-white text-white">
               Choose a product to ship
             </label>
             <select
@@ -231,7 +249,7 @@ const Manufacture = () => {
 
           <div className="flex mb-4">
             <div className="w-1/2 mr-2">
-            <label htmlFor="id" className="block text-sm font-medium text-gray-600">
+            <label htmlFor="id" className="block text-sm font-medium text-white">
               Product ID
             </label>
             <input
@@ -245,7 +263,7 @@ const Manufacture = () => {
               />
             </div>
             <div className="w-1/2 ml-2">
-            <label htmlFor="category" className="block text-sm font-medium text-gray-600">
+            <label htmlFor="category" className="block text-sm font-medium text-white">
               Category
             </label>
             <select
@@ -269,7 +287,7 @@ const Manufacture = () => {
           </div>
 
           <div className="mb-4">
-          <label htmlFor="dateAdded" className="block text-sm font-medium text-gray-600">
+          <label htmlFor="dateAdded" className="block text-sm font-medium text-white">
                 Date Added
               </label>
               <input
@@ -283,7 +301,7 @@ const Manufacture = () => {
           </div>
           <div className="flex mb-4">
             <div className="w-1/2 mr-2">
-              <label htmlFor="from" className="block text-sm font-medium text-gray-600">
+              <label htmlFor="from" className="block text-sm font-medium text-white">
                 From
               </label>
               <input
@@ -296,7 +314,7 @@ const Manufacture = () => {
               />
             </div>
             <div className="w-1/2 ml-2">
-            <label htmlFor="to" className="block text-sm font-medium text-gray-600">
+            <label htmlFor="to" className="block text-sm font-medium text-white">
               To
             </label>
             <select
@@ -319,7 +337,7 @@ const Manufacture = () => {
           </div>
           
           <div className="mb-4">
-            <label htmlFor="status" className="block text-sm font-medium text-gray-600">
+            <label htmlFor="status" className="block text-sm font-medium text-white">
               Status
             </label>
             <textarea
@@ -336,7 +354,7 @@ const Manufacture = () => {
           <div className="flex justify-between">
             <button
               type="button"
-              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+              className="text-white bg-lime-custom hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               onClick={() => 
                 handleAddShipment()}
               
@@ -345,13 +363,15 @@ const Manufacture = () => {
             </button>
             <button
               type="button"
-              className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 text-sm"
             >
               Cancel
             </button>
           </div>
         </div>
       </main>
+
+      <AddProductModal modal={addProductModal} setModal={setAddProductModal}/>
     </div>
   );
 };

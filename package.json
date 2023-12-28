@@ -20,6 +20,7 @@
     "jsqr": "^1.4.0",
     "mysql2": "^3.6.5",
     "next": "14.0.4",
+    "qr-scanner": "^1.4.2",
     "qrcode-reader": "^1.0.4",
     "react": "^18",
     "react-dom": "^18",

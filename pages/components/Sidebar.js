@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Sidebar = ({name}) => {
   return (
-    <div className="bg-gray-800 text-white h-full p-4">
+    <div className=" text-white h-full p-4 bg-black backdrop-blur-sm bg-opacity-70 ">
       <h2 className="text-xl font-bold mb-4">{name}</h2>
 
       <ul className="space-y-5">
