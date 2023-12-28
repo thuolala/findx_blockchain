@@ -3,9 +3,10 @@
 import "@fortawesome/fontawesome-svg-core/styles.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from 'next/link';
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import ReactDOM from 'react-dom';
 import { QrReader } from "react-qr-reader";
+import QrScanner from "qr-scanner";
 import { TrackingContext } from '@/context/TrackingContext';
 import {
   faHouse,
@@ -21,7 +22,7 @@ const QRHandle = () => {
   const loadData = (result) => {
     getAllShipment(result)
       .then((ships) => {
-        setCount(ships.length)
+        setCount(ships?.length)
         displayTracking(ships)
       })
   };
@@ -30,7 +31,7 @@ const QRHandle = () => {
     const displayTrackingDiv = document.getElementById("displayTracking");
   
     if (displayTrackingDiv) {
-      const contentArray = history.map((product, index) => (
+      const contentArray = history?.map((product, index) => (
         <div
           key={index}
           className="border-lime-custom bg-black backdrop-blur-sm bg-opacity-50 rounded-lg mt-2 p-4"
@@ -49,8 +50,22 @@ const QRHandle = () => {
       ReactDOM.render(contentArray, displayTrackingDiv);
     }
   };
-  
 
+  //UPLOAD QR  
+  const [ file, setFile ] = useState(null)
+  const [ qrResult, setQrResult ] = useState(null)
+  const fileRef = useRef()
+  const handleClick = () => {
+    fileRef.current.click()
+    console.log(file)
+  }
+  const handleChange = async (e) => {
+    const file = e.target.files[0]
+    setFile(file)
+    const result = await QrScanner.scanImage(file)
+    setData(result)
+    loadData(String(result));
+  }
   return (
     <div className="flex h-screen lg:flex-row flex-col justify-between p-5 bg-img container-fluid h-full w-full"> 
         <header className="sticky top-0 z-50">
@@ -65,7 +80,7 @@ const QRHandle = () => {
         {/* Left for qr reader */}
         <div className="lg:w-1/2 lg:my-auto lg:mx-auto w-full"> 
           <div className='w-w50 h-h50 flex flex-col mx-auto my-auto '>
-          <QrReader className='border-lime-custom bg-black backdrop-blur-sm bg-opacity-50 rounded-lg' 
+          <QrReader className='border-lime-custom bg-black backdrop-blur-sm bg-opacity-50 rounded-lg mb-3' 
               onResult = {(result, error) => {
                 if (!!result) {
                   setData(result?.text);
@@ -84,9 +99,20 @@ const QRHandle = () => {
             {/* <h1 className='text-center d-flex flex-col relative justify-center text-md mx-auto text-white mt-2 mb-2' style={{fontFamily: "Roboto Mono", fontWeight: 'lighter'}}>
               or
             </h1> */}
-
-            {/* <button type="submit" className=" w-full text-white bg-lime-custom hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >Upload QR Code</button> */}
+              
+            <button type="submit" 
+              onClick={handleClick}
+              className=" w-full text-white bg-lime-custom hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >Upload QR Code</button>
+            <input type="file" accept=".png, .jpg, .jpeg" hidden 
+              ref={fileRef}
+              onChange={handleChange}
+            />
+            {file && (
+              <div className="flex justify-center items-center my-3">
+                <img src={URL.createObjectURL(file)}/>
+              </div>
+            )}
 
             <p className='text-white font-robo'>Product Id: {data}</p>
         </div>

@@ -120,8 +120,15 @@ export const TrackingProvider = ({ children }) => {
                 pdateList,
                 pstatusList
             } = await contract.getAllShipmentWithId(productId);
-    
-            const allShipments = pidList.map((pid, index) => ({
+            console.log("res",  pidList,
+            pnameList,
+            pcateList,
+            pfromList,
+            ptoList,
+            pdateList,
+            pstatusList)
+
+            const allShipments = pidList?.map((pid, index) => ({
                 productId: pidList[index],
                 productName: pnameList[index],
                 category: pcateList[index],

@@ -5,6 +5,7 @@ import QRCode from 'react-qr-code';
 import Sidebar from './Sidebar';
 import html2canvas from 'html2canvas';
 import { TrackingContext} from '@/context/TrackingContext';
+import AddProductModal from './AddProductModal';
 
 const Manufacture = () => {
   const { addShipment, connectWallet, currentUser, getShipment } = useContext(TrackingContext);
@@ -64,6 +65,7 @@ const Manufacture = () => {
       try {
         const response = await fetch('/api/products');
         const data = await response.json();
+        console.log("data", data)
         setProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -127,6 +129,11 @@ const Manufacture = () => {
     }
   };  
 
+  //Show modal
+  const [ addProductModal, setAddProductModal ] = useState(false)
+  const showAddProductModal = () => {
+    setAddProductModal(true)
+  }
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -165,7 +172,7 @@ const Manufacture = () => {
           </div>
 
             {/* Push-up box */}
-            {showPushUpBox && (
+          {showPushUpBox && (
             <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-auto push-up-box fly-up-animation" style={{ width: 'fit-content' }}>
               <button type="button" className="bg-white rounded-md p-2 items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 mr-0" onClick={() => setShowPushUpBox(false)}>
                 <span class="sr-only">Close menu</span>
@@ -176,6 +183,14 @@ const Manufacture = () => {
               <p className="text-center text-gray-500 font-robo">New block added </p>
             </div>
           )}
+
+          <button
+              type="button"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              onClick={showAddProductModal}
+            >
+              Add Product
+            </button>
         </div>
 
         {/* Right side for adding a product */}
@@ -352,6 +367,7 @@ const Manufacture = () => {
           </div>
         </div>
       </main>
+      <AddProductModal modal={addProductModal} setModal={setAddProductModal}/>
     </div>
   );
 };
