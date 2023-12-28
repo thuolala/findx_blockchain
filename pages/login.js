@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import React from "react";
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function LoginModal({showModal, setShowModal}) {
     const [email, setEmail] = useState('');
@@ -87,12 +88,12 @@ export default function LoginModal({showModal, setShowModal}) {
                                     </div>
                                     <label for="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 font-robo">Remember me</label>
                                 </div>
-                                <a href="#" className="text-sm text-blue-700 hover:text-black text-lime-custom font-robo">Lost Password?</a>
+                                <Link href="#" className="text-sm text-blue-700 hover:text-black text-lime-custom font-robo">Lost Password?</Link>
                             </div>
                             <button type="submit" className="w-full text-white bg-lime-custom hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     >Login</button>
                             <div className="text-sm font-medium text-gray-500 dark:text-gray-300 font-robo">
-                                Not registered? <a href="/logup" className="text-lime-custom hover:text-black font-robo" >Create account</a>
+                                Not registered? <Link href="/" className="text-lime-custom hover:text-black font-robo" >Create account</Link>
                             </div>
                         </form>
                     </div>
