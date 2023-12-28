@@ -142,55 +142,58 @@ const Manufacture = () => {
       {/* Main content */}
       <main className="flex-1 flex p-8">
         {/* Left side for reading and displaying QR code */}
-        <div className="w-1/4 p-4 border-r border-gray-300">
-          {/* Box to display QR code */}
-          <div className="bg-white p-2 shadow-md rounded-md mb-4 mx-auto" style={{ width: 'fit-content' }} id="qrCodeContainer">
-            {generatedQR ? (
-              <QRCode value={generatedQR} size={150} />
-            ) : (
-              <p className="text-center text-gray-500 font-robo">No QR Code generated</p>
+        <div className="w-1/4 p-4 border-r flex flex-col justify-between border-gray-300">
+          <div>
+            {/* Box to display QR code */}
+            <div className="bg-white p-2 shadow-md rounded-md mb-4 mx-auto" style={{ width: 'fit-content' }} id="qrCodeContainer">
+              {generatedQR ? (
+                <QRCode value={generatedQR} size={150} />
+              ) : (
+                <p className="text-center text-gray-500 font-robo">No QR Code generated</p>
+              )}
+            </div>
+
+            {/* Buttons to generate and download QR code */}
+            <div className="flex justify-between">
+              <button
+                type="button"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                onClick={generateQRCode}
+              >
+                Generate
+              </button>
+              <button
+                type="button"
+                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                onClick={downloadQRCode}
+                disabled={!generatedQR}
+              >
+                Download
+              </button>
+            </div>
+
+              {/* Push-up box */}
+            {showPushUpBox && (
+              <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-auto push-up-box fly-up-animation" style={{ width: 'fit-content' }}>
+                <button type="button" className="bg-white rounded-md p-2 items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 mr-0" onClick={() => setShowPushUpBox(false)}>
+                  <span class="sr-only">Close menu</span>
+                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                <p className="text-center text-gray-500 font-robo">New block added </p>
+              </div>
             )}
           </div>
-
-          {/* Buttons to generate and download QR code */}
-          <div className="flex justify-between">
+          <div>
             <button
-              type="button"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-              onClick={generateQRCode}
-            >
-              Generate
-            </button>
-            <button
-              type="button"
-              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              onClick={downloadQRCode}
-              disabled={!generatedQR}
-            >
-              Download
-            </button>
-          </div>
-
-            {/* Push-up box */}
-          {showPushUpBox && (
-            <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-auto push-up-box fly-up-animation" style={{ width: 'fit-content' }}>
-              <button type="button" className="bg-white rounded-md p-2 items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 mr-0" onClick={() => setShowPushUpBox(false)}>
-                <span class="sr-only">Close menu</span>
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                type="button"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                onClick={showAddProductModal}
+              >
+                Add Product
               </button>
-              <p className="text-center text-gray-500 font-robo">New block added </p>
             </div>
-          )}
-
-          <button
-              type="button"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-              onClick={showAddProductModal}
-            >
-              Add Product
-            </button>
         </div>
 
         {/* Right side for adding a product */}
